@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import {Layout} from 'antd';
 import {Button} from 'antd';
+import {AppButtonAdd} from "./App_styles";
 
 import './App.css';
 import {DataStore} from '@aws-amplify/datastore';
 
 import {Reminder, Category} from './models';
 import ItemList from "./components/itemList";
+import InsertItemForm from "./components/insertItemForm";
 
 const {Header, Content} = Layout;
 
@@ -58,6 +60,7 @@ function App() {
             </Header>
 
             <Content>
+                <InsertItemForm/>
                 {data && data.map((el, i) => {
                     return (
                         <p>
@@ -68,6 +71,7 @@ function App() {
                     )
                 })}
                 <ItemList/></Content>
+            <AppButtonAdd/>
         </Layout>
 
 

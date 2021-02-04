@@ -40,3 +40,11 @@ amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
+/.eslintcache
+/.idea/.gitignore
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/react-amplified.iml
+/.idea/vcs.xml
+/.idea/watcherTasks.xml

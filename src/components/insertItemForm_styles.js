@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
-export const ItemListStyled = styled.section`
+
+export const InsertForm = styled.section`
     padding: 20px;
 `;
