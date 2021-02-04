@@ -8,6 +8,7 @@ type Reminder @model @auth(rules: [{allow: public}]) @key(name: "byCategory", fi
   id: ID!
   name: String
   date: AWSDate
-  store: String
+  price: Float
   categoryID: ID!
+  store: String
 }

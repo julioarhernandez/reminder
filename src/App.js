@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import {Layout} from 'antd';
 import {Button} from 'antd';
+import moment from "moment";
 import {AppButtonAdd} from "./App_styles";
 
 import './App.css';
@@ -20,10 +21,12 @@ function App() {
     useEffect(() => {
         readData();
         readDataCat();
+
     }, []);
 
     function formInsertHandler(formData){
         console.log('from here',formData);
+        saveData({...formData, Date: moment(formData.Date).format("YYYY-MM-DD")});
         // saveData(formData);
     }
 
@@ -32,8 +35,9 @@ function App() {
         await DataStore.save(
             new Reminder({
                 "name": data.Name,
-                "date": "1970-01-01Z",
-                "store": data.Price,
+                "date": moment(data.Date).format("YYYY-MM-DD"),
+                "price": data.Price,
+                "store": data.Store,
                 "categoryID": data.Category
             })
         );
@@ -43,7 +47,7 @@ function App() {
         console.log('saving data');
         await DataStore.save(
             new Category({
-                "category_name": "Lorem ipsum dolor sit amet",
+                "category_name": "Food",
                 "Reminders": []
             })
         );

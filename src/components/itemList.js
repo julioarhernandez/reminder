@@ -2,6 +2,7 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import {List, Avatar, Skeleton} from 'antd';
 import {ItemListStyled} from './itemList_styles';
+import moment from "moment";
 
 const ItemList = ({items}) => {
      return (
@@ -19,8 +20,8 @@ const ItemList = ({items}) => {
                                 avatar={
                                     <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>
                                 }
-                                title={<a href="https://ant.design">{item.name}</a>}
-                                description={`${item.date} bought in ${item.store}`}
+                                title={<a href="https://ant.design">{item.name} - <strong>(${item.price})</strong></a>}
+                                description={`Bought at ${item.store} on ${moment(item.date).format("MM/DD/YYYY")} `}
                             />
                         </Skeleton>
                     </List.Item>

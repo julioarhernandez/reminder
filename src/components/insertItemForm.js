@@ -12,7 +12,7 @@ import {InsertForm} from "./insertItemForm_styles"
 
 const InsertItemForm = ({categories, submitHandler}) => {
 
-    const [formData, setFormData] = useState({Name:'', Category: '', Date: '', Price: ''});
+    const [formData, setFormData] = useState({Name:'', Category: '', Store: '', Date: '', Price: ''});
 
     const handleChange = (value, element) => {
         setFormData({...formData, [element]: value});
@@ -48,6 +48,16 @@ const InsertItemForm = ({categories, submitHandler}) => {
                 >
                     <Input
                         name="Name"
+                        onChange={(e) => handleChange(e.target.value, e.target.name)}
+                    />
+                </Form.Item>
+
+                <Form.Item
+                    label="Store"
+                    tooltip="This is a required field"
+                >
+                    <Input
+                        name="Store"
                         onChange={(e) => handleChange(e.target.value, e.target.name)}
                     />
                 </Form.Item>
