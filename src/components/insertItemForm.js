@@ -16,7 +16,10 @@ const InsertItemForm = ({categories, submitHandler}) => {
 
     const handleChange = (value, element) => {
         setFormData({...formData, [element]: value});
-        console.log(formData);
+    };
+
+    const submitFormHandler = () => {
+        submitHandler(formData);
     };
 
     return (
@@ -30,8 +33,19 @@ const InsertItemForm = ({categories, submitHandler}) => {
                 }}
                 layout="horizontal"
                 size="large"
+                onFinish={submitFormHandler}
             >
-                <Form.Item label="Item Name">
+                <Form.Item
+                    label="Item Name"
+                    required
+                    tooltip="This is a required field"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input Item Name!',
+                        },
+                    ]}
+                >
                     <Input
                         name="Name"
                         onChange={(e) => handleChange(e.target.value, e.target.name)}
@@ -56,6 +70,14 @@ const InsertItemForm = ({categories, submitHandler}) => {
                     <Form.Item
                         label="Date"
                         style={{display: 'inline-block', width: 'calc(50% - 8px)'}}
+                        required
+                        tooltip="This is a required field"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input start date of item!',
+                            },
+                        ]}
                     >
                         <DatePicker
                             format={"MM/DD/YYYY"}
@@ -76,7 +98,9 @@ const InsertItemForm = ({categories, submitHandler}) => {
                     </Form.Item>
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary">Insert Item</Button>
+                    <Button
+                        type="primary"
+                        htmlType="submit">Insert Item</Button>
                 </Form.Item>
             </Form>
         </InsertForm>

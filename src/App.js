@@ -23,7 +23,7 @@ function App() {
     }, []);
 
     function formInsertHandler(formData){
-        console.log(formData);
+        console.log('from here',formData);
         // saveData(formData);
     }
 
@@ -31,10 +31,10 @@ function App() {
         console.log('saving data');
         await DataStore.save(
             new Reminder({
-                "name": "Lorem ipsum dolor sit amet",
+                "name": data.Name,
                 "date": "1970-01-01Z",
-                "store": "Lorem ipsum dolor sit amet",
-                "categoryID": "d5ee6b1e-211e-45cb-8dd5-53b398f3b383"
+                "store": data.Price,
+                "categoryID": data.Category
             })
         );
     }
