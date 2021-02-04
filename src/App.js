@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import {Layout} from 'antd';
 import {Button} from 'antd';
 import {AppButtonAdd} from "./App_styles";
@@ -13,7 +13,14 @@ import InsertItemForm from "./components/insertItemForm";
 const {Header, Content} = Layout;
 
 function App() {
+
     const [data, setData] = useState();
+    const [categories, setCategories] = useState();
+
+    useEffect(() => {
+        readData();
+        readDataCat();
+    }, []);
 
     async function saveData() {
         console.log('saving data');
@@ -45,8 +52,7 @@ function App() {
 
     async function readDataCat() {
         const models2 = await DataStore.query(Category);
-        setData(models2);
-        console.log(models2);
+        setCategories(models2);
     }
 
   return (
@@ -60,17 +66,9 @@ function App() {
             </Header>
 
             <Content>
-                <InsertItemForm/>
-                {data && data.map((el, i) => {
-                    return (
-                        <p>
-                            <span>{el.category_name}</span> ->
-                            <span>{el.id}</span> ->
-                            <span>{el.categoryID}</span>
-                        </p>
-                    )
-                })}
-                <ItemList/></Content>
+                <InsertItemForm categories={categories}/>
+                <ItemList items={data}/>
+            </Content>
             <AppButtonAdd/>
         </Layout>
 

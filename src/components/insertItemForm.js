@@ -11,7 +11,7 @@ import {
 
 import {InsertForm} from "./insertItemForm_styles"
 
-const InsertItemForm = () => {
+const InsertItemForm = ({categories}) => {
     return (
         <InsertForm>
             <Form
@@ -24,27 +24,40 @@ const InsertItemForm = () => {
                 layout="horizontal"
                 size="large"
             >
-                <Form.Item label="Input">
+                <Form.Item label="Item Name">
                     <Input/>
                 </Form.Item>
-                <Form.Item label="Select">
+
+                <Form.Item label="Category">
                     <Select>
-                        <Select.Option value="demo">Demo</Select.Option>
-                        <Select.Option value="demo">Demo</Select.Option>
-                        <Select.Option value="demo">Demo</Select.Option>
+                        {categories && categories.map( (item,index)=>{
+                           return (
+                               <Select.Option value={item.ID}>{item.category_name}</Select.Option>
+                           )
+                        })}
                     </Select>
                 </Form.Item>
-                <Form.Item label="DatePicker">
-                    <DatePicker/>
+                <Form.Item>
+                    <Form.Item
+                        label="Date"
+                        style={{display: 'inline-block', width: 'calc(50% - 8px)'}}
+                    >
+                        <DatePicker
+                            format={"MM/DD/YYYY"}
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        label="Price"
+                        style={{display: 'inline-block', width: 'calc(50% - 8px)'}}
+                    >
+                        <InputNumber
+                            formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                        />
+                    </Form.Item>
                 </Form.Item>
-                <Form.Item label="InputNumber">
-                    <InputNumber/>
-                </Form.Item>
-                <Form.Item label="Switch">
-                    <Switch/>
-                </Form.Item>
-                <Form.Item label="Button">
-                    <Button>Button</Button>
+                <Form.Item>
+                    <Button type="primary">Insert Item</Button>
                 </Form.Item>
             </Form>
         </InsertForm>
