@@ -7,5 +7,10 @@ export const ItemListStyled = styled.section`
         strong{
             font-size: 12px;
         }
+         span {
+            font-size: 10px;
+            color: rgba(0, 22, 41, 0.3);
+            text-transform: uppercase;
+        }
     }
 `;

@@ -3,6 +3,10 @@ import React from 'react';
 import {List, Avatar, Skeleton} from 'antd';
 import {ItemListStyled} from './itemList_styles';
 import moment from "moment";
+import {
+    CalendarTwoTone
+} from '@ant-design/icons';
+
 
 const ItemList = ({items}) => {
      return (
@@ -13,15 +17,15 @@ const ItemList = ({items}) => {
                 dataSource={items}
                 renderItem={item => (
                     <List.Item
-                        actions={[<a key="list-loadmore-edit">Done</a>]}
+                        actions={[<a key="list-loadmore-edit">Edit</a>]}
                     >
                         <Skeleton avatar title={false} loading={item.loading} active>
                             <List.Item.Meta
                                 avatar={
                                     <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>
                                 }
-                                title={<a href="https://ant.design">{item.name} - <strong>(${item.price})</strong></a>}
-                                description={`Bought at ${item.store} on ${moment(item.date).format("MM/DD/YYYY")} `}
+                                title={<a href="https://ant.design">{item.name} <strong>(${item.price})</strong> <span>{item.store}</span></a>}
+                                description={<div><CalendarTwoTone/> {moment().diff(item.date, "days")} Days - {moment(item.date).format("MM/DD/YYYY")}</div>}
                             />
                         </Skeleton>
                     </List.Item>

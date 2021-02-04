@@ -101,6 +101,20 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
+                },
+                "active": {
+                    "name": "active",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "endingDate": {
+                    "name": "endingDate",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -140,5 +154,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "dc28eb6b9cb9ec2d878e65cb897145b0"
+    "version": "250cd3c44fe533d6c9f414a2d20b1f3e"
 };

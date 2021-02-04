@@ -19,6 +19,8 @@ export declare class Reminder {
   readonly price?: number;
   readonly categoryID: string;
   readonly store?: string;
+  readonly active?: boolean;
+  readonly endingDate?: string;
   constructor(init: ModelInit<Reminder>);
   static copyOf(source: Reminder, mutator: (draft: MutableModel<Reminder>) => MutableModel<Reminder> | void): Reminder;
 }

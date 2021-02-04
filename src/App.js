@@ -1,11 +1,11 @@
 import React, { useState, useEffect} from 'react';
-import {Layout} from 'antd';
-import {Button} from 'antd';
+import {Layout, Button} from 'antd';
 import moment from "moment";
+
 import {AppButtonAdd} from "./App_styles";
 
 import './App.css';
-import {DataStore} from '@aws-amplify/datastore';
+import {DataStore, SortDirection} from '@aws-amplify/datastore';
 
 import {Reminder, Category} from './models';
 import ItemList from "./components/itemList";
@@ -26,7 +26,11 @@ function App() {
 
     function formInsertHandler(formData){
         console.log('from here',formData);
-        saveData({...formData, Date: moment(formData.Date).format("YYYY-MM-DD")});
+        // console.log({...formData, Date: moment(formData.Date).format("YYYY-MM-DD")});
+        saveData(formData).then(()=>{
+            console.log('data saved successfully', formData);
+            readData();
+        });
         // saveData(formData);
     }
 
@@ -38,13 +42,14 @@ function App() {
                 "date": moment(data.Date).format("YYYY-MM-DD"),
                 "price": data.Price,
                 "store": data.Store,
+                "active":  true,
                 "categoryID": data.Category
             })
         );
     }
 
     async function saveCategory() {
-        console.log('saving data');
+        console.log('saving data category');
         await DataStore.save(
             new Category({
                 "category_name": "Food",
@@ -54,15 +59,19 @@ function App() {
     }
 
     async function readData() {
-        const models = await DataStore.query(Reminder);
+        const models = await DataStore.query(Reminder, c =>
+            c.active("eq", true),{
+                sort: s => s.date(SortDirection.ASCENDING)
+            }
+        );
         setData(models);
-        console.log(models);
+        console.log('radin data',models);
     }
 
     async function readDataCat() {
         const models2 = await DataStore.query(Category);
         setCategories(models2);
-        console.log(models2);
+        console.log('reading category', models2);
     }
 
   return (
@@ -74,7 +83,6 @@ function App() {
                 <button onClick={() => readData()}>read</button>
                 <button onClick={() => readDataCat()}>readCate</button>
             </Header>
-
             <Content>
                 <InsertItemForm
                     categories={categories}
@@ -84,12 +92,6 @@ function App() {
             </Content>
             <AppButtonAdd/>
         </Layout>
-
-
-
-
-
-
     </div>
   );
 }

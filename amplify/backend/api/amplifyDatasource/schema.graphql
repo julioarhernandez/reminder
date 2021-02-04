@@ -11,4 +11,6 @@ type Reminder @model @auth(rules: [{allow: public}]) @key(name: "byCategory", fi
   price: Float
   categoryID: ID!
   store: String
+  active: Boolean
+  endingDate: AWSDate
 }
