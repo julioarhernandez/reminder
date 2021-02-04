@@ -22,7 +22,12 @@ function App() {
         readDataCat();
     }, []);
 
-    async function saveData() {
+    function formInsertHandler(formData){
+        console.log(formData);
+        // saveData(formData);
+    }
+
+    async function saveData(data) {
         console.log('saving data');
         await DataStore.save(
             new Reminder({
@@ -53,6 +58,7 @@ function App() {
     async function readDataCat() {
         const models2 = await DataStore.query(Category);
         setCategories(models2);
+        console.log(models2);
     }
 
   return (
@@ -66,7 +72,10 @@ function App() {
             </Header>
 
             <Content>
-                <InsertItemForm categories={categories}/>
+                <InsertItemForm
+                    categories={categories}
+                    submitHandler={formInsertHandler}
+                />
                 <ItemList items={data}/>
             </Content>
             <AppButtonAdd/>

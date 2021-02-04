@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     Form,
     Input,
@@ -6,12 +6,19 @@ import {
     Select,
     DatePicker,
     InputNumber,
-    Switch,
 } from 'antd';
 
 import {InsertForm} from "./insertItemForm_styles"
 
-const InsertItemForm = ({categories}) => {
+const InsertItemForm = ({categories, submitHandler}) => {
+
+    const [formData, setFormData] = useState({Name:'', Category: '', Date: '', Price: ''});
+
+    const handleChange = (value, element) => {
+        setFormData({...formData, [element]: value});
+        console.log(formData);
+    };
+
     return (
         <InsertForm>
             <Form
@@ -25,14 +32,22 @@ const InsertItemForm = ({categories}) => {
                 size="large"
             >
                 <Form.Item label="Item Name">
-                    <Input/>
+                    <Input
+                        name="Name"
+                        onChange={(e) => handleChange(e.target.value, e.target.name)}
+                    />
                 </Form.Item>
 
                 <Form.Item label="Category">
-                    <Select>
+                    <Select
+                        name="Category"
+                        onChange={(value) => handleChange(value, 'Category')}
+                    >
                         {categories && categories.map( (item,index)=>{
                            return (
-                               <Select.Option value={item.ID}>{item.category_name}</Select.Option>
+                               <Select.Option
+                                   key={`select-${index}`}
+                                   value={item.id}>{item.category_name}</Select.Option>
                            )
                         })}
                     </Select>
@@ -44,6 +59,8 @@ const InsertItemForm = ({categories}) => {
                     >
                         <DatePicker
                             format={"MM/DD/YYYY"}
+                            name="Date"
+                            onChange={(value, dateValue) => handleChange(dateValue, 'Date')}
                         />
                     </Form.Item>
                     <Form.Item
@@ -53,6 +70,8 @@ const InsertItemForm = ({categories}) => {
                         <InputNumber
                             formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                            name="Price"
+                            onChange={(value) => handleChange(value, 'Price')}
                         />
                     </Form.Item>
                 </Form.Item>
