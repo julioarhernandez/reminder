@@ -11,7 +11,7 @@ import moment from "moment";
 
 import {InsertForm} from "./insertItemForm_styles"
 
-const UpdateItemForm = ({data, categories, submitHandler }) => {
+const UpdateItemForm = ({data, categories, submitHandler, deleteHandler }) => {
 
     const [formData, setFormData] = useState({Id: '',Name:'', Category: '', Store: '', Date: '', Price: ''});
     const [form] = Form.useForm();
@@ -22,6 +22,10 @@ const UpdateItemForm = ({data, categories, submitHandler }) => {
         setFormData({...formData, [element]: value});
         console.log(formData)
     };
+
+    const deleteFormHandler = () => {
+        deleteHandler(formData.id);
+    }
 
     const submitFormHandler = () => {
         submitHandler(formData);
@@ -136,6 +140,10 @@ const UpdateItemForm = ({data, categories, submitHandler }) => {
                     <Button
                         type="primary"
                         htmlType="submit">Update Item</Button>
+                    <Button
+                        danger
+                        onClick={deleteFormHandler}
+                        style={{marginLeft: '10px'}}>Delete Item</Button>
                 </Form.Item>
             </Form>
         </InsertForm>

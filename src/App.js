@@ -37,14 +37,29 @@ function App() {
         setEdit(formData);
     }
 
+    function deleteHandler(id) {
+        eraseData(id).then(() => {
+            readData();
+        });
+    }
+
     function editSubmitHandler(formData) {
         updateData(formData).then(() => {
             readData();
         });
     }
 
+    async function readData() {
+        const models = await DataStore.query(Reminder, c =>
+                c.active("eq", true), {
+                sort: s => s.date(SortDirection.ASCENDING)
+            }
+        );
+        setData(models);
+    }
+
     async function updateData(data) {
-        console.log('updating data', data.id, data.name);
+        console.log('update data');
         const original = await DataStore.query(Reminder, data.id);
         await DataStore.save(
             Reminder.copyOf(original, updated => {
@@ -56,7 +71,6 @@ function App() {
             })
         );
     }
-
 
     async function saveData(data) {
         console.log('saving data');
@@ -72,6 +86,11 @@ function App() {
         );
     }
 
+    async function eraseData(data) {
+        const modelToDelete = await DataStore.query(Reminder, data);
+        DataStore.delete(modelToDelete);
+    }
+
     async function saveCategory() {
         console.log('saving data category');
         await DataStore.save(
@@ -80,15 +99,6 @@ function App() {
                 "Reminders": []
             })
         );
-    }
-
-    async function readData() {
-        const models = await DataStore.query(Reminder, c =>
-            c.active("eq", true),{
-                sort: s => s.date(SortDirection.ASCENDING)
-            }
-        );
-        setData(models);
     }
 
     async function readDataCat() {
@@ -114,6 +124,7 @@ function App() {
                     data={edit}
                     categories={categories}
                     submitHandler={editSubmitHandler}
+                    deleteHandler={deleteHandler}
                 />
                 <ItemList
                     editHandler={editHandler}
