@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';
-import {Layout, Button} from 'antd';
+import {Layout, Button, Tabs, message} from 'antd';
 import moment from "moment";
 import classNames from "classnames";
 
@@ -20,20 +20,28 @@ const {Header, Content} = Layout;
 function App() {
 
     const [data, setData] = useState();
+    const [dataArchived, setDataArchived] = useState();
     const [categories, setCategories] = useState();
     const [edit, setEdit] = useState();
     const [uiView, setUiView] = useState('home');
+    const {TabPane} = Tabs;
 
     useEffect(() => {
         readData();
         readDataCat();
-
+        readDataArchived();
     }, []);
+
+    function callback(key) {
+        console.log(key);
+    }
 
     function formInsertHandler(formData){
         saveData(formData).then(()=>{
             console.log('data saved successfully', formData);
             readData();
+            message.success('New Item Created');
+            // Reset insert input fields
         });
     }
 
@@ -49,12 +57,18 @@ function App() {
     function deleteHandler(id) {
         eraseData(id).then(() => {
             readData();
+            readDataArchived();
+            setUiView('home');
+            message.success('Item Deleted');
         });
     }
 
     function editSubmitHandler(formData) {
         updateData(formData).then(() => {
             readData();
+            readDataArchived();
+            message.success('Item Updated');
+            setUiView('home');
         });
     }
 
@@ -67,14 +81,24 @@ function App() {
         setData(models);
     }
 
+    async function readDataArchived() {
+        const models = await DataStore.query(Reminder, c =>
+                c.active("eq", false), {
+                sort: s => s.date(SortDirection.ASCENDING)
+            }
+        );
+        setDataArchived(models);
+    }
+
     async function updateData(data) {
-        console.log('update data');
+        console.log('update data', moment(data.date).format( "YYYY-MM-DD"));
         const original = await DataStore.query(Reminder, data.id);
         await DataStore.save(
             Reminder.copyOf(original, updated => {
                 updated.name = data.name;
                 updated.store = data.store;
-                updated.date = data.date;
+                updated.date = moment(data.date).format( "YYYY-MM-DD").toString();
+                updated.endingDate = moment(data.endingDate).format("YYYY-MM-DD").toString();
                 updated.price = data.price;
                 updated.active = data.active;
                 updated.categoryID = data.categoryID;
@@ -129,6 +153,7 @@ function App() {
                 <div className={classNames('fake-modal animate__animated animate__faster',{
                     animate__slideInDown: uiView === 'Insert',
                     animate__fadeOutDown: uiView !== 'Insert',
+                    hide: uiView !== 'Insert',
                 })}>
                     <InsertItemForm
                         categories={categories}
@@ -140,6 +165,7 @@ function App() {
                 <div className={classNames('fake-modal animate__animated animate__faster', {
                     animate__slideInDown: uiView === 'Update',
                     animate__fadeOutDown: uiView !== 'Update',
+                    hide: uiView !== 'Update',
                 })}>
                     <UpdateItemForm
                         data={edit}
@@ -149,10 +175,23 @@ function App() {
                         <CloseFakeModal
                             closeHandler={closeHandler}/>
                     </UpdateItemForm>
+
                 </div>
-                <ItemList
-                    editHandler={editHandler}
-                    items={data}/>
+                <Tabs defaultActiveKey="1" onChange={callback}>
+                    <TabPane tab="Active" key="1">
+                        <ItemList
+                            editHandler={editHandler}
+                            items={data}
+                            categories={categories}/>
+                    </TabPane>
+                    <TabPane tab="Archived" key="2">
+                        <ItemList
+                            editHandler={editHandler}
+                            items={dataArchived}
+                            categories={categories}/>
+                    </TabPane>
+                </Tabs>
+
             </Content>
             <AppButtonAdd
                 className="ant-btn-primary"

@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import classNames from 'classnames';
 import {
     Form,
     Input,
@@ -6,13 +7,14 @@ import {
     Select,
     DatePicker,
     InputNumber,
-    Switch
+    Switch,
+    Row,
+    Col
 } from 'antd';
 import moment from "moment";
 import {CloseOutlined, CheckOutlined} from '@ant-design/icons';
 
 import {InsertForm} from "./insertItemForm_styles"
-import CloseFakeModal from "./closeFakeModal";
 
 const UpdateItemForm = ({data, categories, submitHandler, deleteHandler, children }) => {
 
@@ -32,6 +34,7 @@ const UpdateItemForm = ({data, categories, submitHandler, deleteHandler, childre
     }
 
     const submitFormHandler = () => {
+        console.log('data submitted for update is',formData);
         submitHandler(formData);
     };
 
@@ -42,12 +45,13 @@ const UpdateItemForm = ({data, categories, submitHandler, deleteHandler, childre
             Store: data && data.store,
             Category: data && data.categoryID,
             Date: data && moment(data.date),
+            endingDate: data && moment(data.endingDate),
             Price: data && data.price,
             Active: true
         });
         setFormData(data);
 
-        //TODO: Update button shoud be disabled
+        //TODO: Update button should be disabled
         // avoid send not changed data to update
 
         console.log('effect here', data);
@@ -59,10 +63,10 @@ const UpdateItemForm = ({data, categories, submitHandler, deleteHandler, childre
             <Form
                 form={form}
                 labelCol={{
-                    span: 4,
+                    span: 6,
                 }}
                 wrapperCol={{
-                    span: 14,
+                    span: 12,
                 }}
                 layout="horizontal"
                 size="large"
@@ -73,7 +77,8 @@ const UpdateItemForm = ({data, categories, submitHandler, deleteHandler, childre
                     type="hidden"
                     onChange={(e) => handleChange(e.target.value, 'Id')}
                 />
-
+                <Row gutter={10} className="mb-submit">
+                    <Col span={12}>
                 <Form.Item
                     label="Status"
                     name="Active">
@@ -84,6 +89,27 @@ const UpdateItemForm = ({data, categories, submitHandler, deleteHandler, childre
                         checked={formData && formData.active}
                     />
                 </Form.Item>
+                    </Col>
+                        <Col span={12} className={classNames({hidden: formData && formData.active})}>
+                            <Form.Item
+                                label="Ending Date"
+                                // style={{display: 'inline-block', width: 'calc(50% - 8px)'}}
+                                required
+                                tooltip="This is a required field"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input end of date of item!',
+                                    },
+                                ]}
+                                name="endingDate">
+                                <DatePicker
+                                    disabled={formData && formData.active}
+                                    format={"MM/DD/YYYY"}
+                                    onChange={(value, dateValue) => handleChange(dateValue, 'endingDate')}/>
+                            </Form.Item>
+                        </Col>
+                </Row>
 
                 <Form.Item
                     label="Item Name"
@@ -127,37 +153,39 @@ const UpdateItemForm = ({data, categories, submitHandler, deleteHandler, childre
                         })}
                     </Select>
                 </Form.Item>
-                <Form.Item>
-                    <Form.Item
-                        label="Date"
-                        style={{display: 'inline-block', width: 'calc(50% - 8px)'}}
-                        required
-                        tooltip="This is a required field"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input start date of item!',
-                            },
-                        ]}
-                        name="Date"
-                    >
-                        <DatePicker
-                            format={"MM/DD/YYYY"}
-                            onChange={(value, dateValue) => handleChange(dateValue, 'date')}
-                        />
-                    </Form.Item>
-                    <Form.Item
-                        label="Price"
-                        name="Price"
-                        style={{display: 'inline-block', width: 'calc(50% - 8px)'}}
-                    >
-                        <InputNumber
-                            formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                            parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                            onChange={(value) => handleChange(value, 'price')}
-                        />
-                    </Form.Item>
-                </Form.Item>
+                <Row gutter={10} className="mb-submit">
+                    <Col span={12}>
+                        <Form.Item
+                            label="Date"
+                            // style={{display: 'inline-block', width: 'calc(50% - 8px)'}}
+                            required
+                            tooltip="This is a required field"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input start date of item!',
+                                },
+                            ]}
+                            name="Date">
+                            <DatePicker
+                                format={"MM/DD/YYYY"}
+                                onChange={(value, dateValue) => handleChange(dateValue, 'date')} />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            label="Price"
+                            name="Price"
+                            // style={{display: 'inline-block', width: 'calc(50% - 8px)'}}>
+                            >
+                            <InputNumber
+                                formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                onChange={(value) => handleChange(value, 'price')}
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
                 <Form.Item>
                     <Button
                         type="primary"

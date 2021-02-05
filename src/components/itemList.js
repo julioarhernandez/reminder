@@ -8,7 +8,27 @@ import {
 } from '@ant-design/icons';
 
 
-const ItemList = ({items, editHandler}) => {
+const ItemList = ({items, editHandler, categories}) => {
+
+    const findCategory = (catId) => {
+        const catIdFound = categories.find(v => v.id === catId);
+        if (catIdFound){
+            return catIdFound.category_name;
+        }
+    };
+
+    const getFirstLetterOf = (string) => {
+        return string[0];
+    };
+
+    const showCatLetter = (itemCategoryId) => {
+        const catName = findCategory(itemCategoryId);
+        if (catName){
+            return getFirstLetterOf(catName);
+        }
+        return '?';
+    };
+
     const itemClickHandler = (item) => {
         editHandler(item);
     };
@@ -25,7 +45,7 @@ const ItemList = ({items, editHandler}) => {
                         <Skeleton avatar title={false} loading={item.loading} active>
                             <List.Item.Meta
                                 avatar={
-                                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>
+                                    <Avatar style={{backgroundColor: 'rgba(0, 22, 41, 0.5)'}}>{showCatLetter(item.categoryID)}</Avatar>
                                 }
                                 title={<div>{item.name}{item.price !== 0 && <strong>(${item.price})</strong>} <span>{item.store}</span></div>}
                                 description={<div><CalendarTwoTone/> {moment().diff(item.date, "days")} Days - {moment(item.date).format("MM/DD/YYYY")}</div>}

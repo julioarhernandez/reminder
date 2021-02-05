@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
     Form,
     Input,
@@ -9,11 +9,12 @@ import {
 } from 'antd';
 
 import {InsertForm} from "./insertItemForm_styles"
-import CloseFakeModal from "./closeFakeModal";
 
 const InsertItemForm = ({categories, submitHandler, children}) => {
 
     const [formData, setFormData] = useState({Name:'', Category: '', Store: '', Date: '', Price: ''});
+    const inputName = useRef();
+    const inputPrice = useRef();
 
     const handleChange = (value, element) => {
         setFormData({...formData, [element]: value});
@@ -21,7 +22,11 @@ const InsertItemForm = ({categories, submitHandler, children}) => {
 
     const submitFormHandler = () => {
         submitHandler(formData);
+
+        // TODO: after submitting clear the
+        //  input name and date
     };
+
 
     return (
         <InsertForm>
@@ -50,6 +55,7 @@ const InsertItemForm = ({categories, submitHandler, children}) => {
                     ]}
                 >
                     <Input
+                        ref={inputName}
                         onChange={(e) => handleChange(e.target.value, 'Name')}
                     />
                 </Form.Item>
@@ -103,6 +109,7 @@ const InsertItemForm = ({categories, submitHandler, children}) => {
                         style={{display: 'inline-block', width: 'calc(50% - 8px)'}}
                     >
                         <InputNumber
+                            ref={inputPrice}
                             formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             parser={value => value.replace(/\$\s?|(,*)/g, '')}
                             onChange={(value) => handleChange(value, 'Price')}

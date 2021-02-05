@@ -4,6 +4,10 @@
     position: relative;
 }
 
+.App .ant-layout-content{
+  padding: 20px;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -29,9 +33,16 @@
 .App-link {
   color: #61dafb;
 }
+.mb-submit{
+  margin-bottom: 20px;
+}
+.hidden{
+  display: none;
+}
 
 .hide{
   opacity: 0;
+  pointer-events: none;
 }
 .invisible{
   visibility: hidden;
@@ -55,6 +66,5 @@
   background: white;
   z-index: 1;
   box-shadow: 0 0 20px 0px rgba(0, 21, 42, 0.1);
-  margin: 20px;
   border-radius: 3px;
 }
