@@ -98,7 +98,7 @@ function App() {
                 updated.name = data.name;
                 updated.store = data.store;
                 updated.date = moment(data.date).format( "YYYY-MM-DD").toString();
-                updated.endingDate = moment(data.endingDate).format("YYYY-MM-DD").toString();
+                updated.endingDate = data.active ? null : moment(data.endingDate).format("YYYY-MM-DD").toString();
                 updated.price = data.price;
                 updated.active = data.active;
                 updated.categoryID = data.categoryID;

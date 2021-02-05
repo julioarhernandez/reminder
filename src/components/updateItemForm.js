@@ -45,7 +45,7 @@ const UpdateItemForm = ({data, categories, submitHandler, deleteHandler, childre
             Store: data && data.store,
             Category: data && data.categoryID,
             Date: data && moment(data.date),
-            endingDate: data && moment(data.endingDate),
+            endingDate: (data && data.endingDate) && moment(data.endingDate),
             Price: data && data.price,
             Active: true
         });

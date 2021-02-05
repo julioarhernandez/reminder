@@ -17,6 +17,17 @@ const ItemList = ({items, editHandler, categories}) => {
         }
     };
 
+    const compareDateResult = (itemDate, itemEndingDate) => {
+        console.log('itemending', itemEndingDate);
+        if (itemEndingDate) {
+            return moment(itemEndingDate).diff(itemDate, "days");
+
+        } else {
+            return moment().diff(itemDate, "days");
+        }
+
+    };
+
     const getFirstLetterOf = (string) => {
         return string[0];
     };
@@ -48,7 +59,7 @@ const ItemList = ({items, editHandler, categories}) => {
                                     <Avatar style={{backgroundColor: 'rgba(0, 22, 41, 0.5)'}}>{showCatLetter(item.categoryID)}</Avatar>
                                 }
                                 title={<div>{item.name}{item.price !== 0 && <strong>(${item.price})</strong>} <span>{item.store}</span></div>}
-                                description={<div><CalendarTwoTone/> {moment().diff(item.date, "days")} Days - {moment(item.date).format("MM/DD/YYYY")}</div>}
+                                description={<div><CalendarTwoTone/> {compareDateResult(item.date, item.endingDate)} Days - {moment(item.date).format("MM/DD/YYYY")}</div>}
                             />
                         </Skeleton>
                     </List.Item>
