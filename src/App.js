@@ -184,7 +184,7 @@ function App() {
                             items={data}
                             categories={categories}/>
                     </TabPane>
-                    <TabPane tab="Archived" key="2">
+                    <TabPane tab="Ended" key="2">
                         <ItemList
                             editHandler={editHandler}
                             items={dataArchived}
