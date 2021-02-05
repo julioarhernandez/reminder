@@ -67,6 +67,7 @@ function App() {
                 updated.store = data.store;
                 updated.date = data.date;
                 updated.price = data.price;
+                updated.active = data.active;
                 updated.categoryID = data.categoryID;
             })
         );

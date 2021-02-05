@@ -6,21 +6,24 @@ import {
     Select,
     DatePicker,
     InputNumber,
+    Switch
 } from 'antd';
 import moment from "moment";
+import {CloseOutlined, CheckOutlined} from '@ant-design/icons';
 
 import {InsertForm} from "./insertItemForm_styles"
 
 const UpdateItemForm = ({data, categories, submitHandler, deleteHandler }) => {
 
-    const [formData, setFormData] = useState({Id: '',Name:'', Category: '', Store: '', Date: '', Price: ''});
+    const [formData, setFormData] = useState({Id: '',Name:'', Category: '', Store: '', Date: '', Price: '', Active: false});
+    const [enableSubmit, setEnableSubmit] = useState(false);
     const [form] = Form.useForm();
 
 
     const handleChange = (value, element) => {
-        console.log({...formData, [element]: value});
         setFormData({...formData, [element]: value});
         console.log(formData)
+        setEnableSubmit(true);
     };
 
     const deleteFormHandler = () => {
@@ -39,9 +42,14 @@ const UpdateItemForm = ({data, categories, submitHandler, deleteHandler }) => {
             Category: data && data.categoryID,
             Date: data && moment(data.date),
             Price: data && data.price,
+            Active: true
         });
         setFormData(data);
-        console.log('effect here');
+
+        //TODO: Update button shoud be disabled
+        // avoid send not changed data to update
+
+        console.log('effect here', data);
     }, [data]);
 
     return (
@@ -63,6 +71,18 @@ const UpdateItemForm = ({data, categories, submitHandler, deleteHandler }) => {
                     type="hidden"
                     onChange={(e) => handleChange(e.target.value, 'Id')}
                 />
+
+                <Form.Item
+                    label="Status"
+                    name="Active">
+                    <Switch
+                        checkedChildren={<CheckOutlined/>}
+                        unCheckedChildren={<CloseOutlined/>}
+                        onChange={(checked) => handleChange(checked, 'active')}
+                        checked={formData && formData.active}
+                    />
+                </Form.Item>
+
                 <Form.Item
                     label="Item Name"
                     required
@@ -139,7 +159,8 @@ const UpdateItemForm = ({data, categories, submitHandler, deleteHandler }) => {
                 <Form.Item>
                     <Button
                         type="primary"
-                        htmlType="submit">Update Item</Button>
+                        htmlType="submit"
+                    >Update Item</Button>
                     <Button
                         danger
                         onClick={deleteFormHandler}
