@@ -9,7 +9,8 @@ import {DataStore, SortDirection} from '@aws-amplify/datastore';
 
 import {Reminder, Category} from './models';
 import ItemList from "./components/itemList";
-import InsertItemForm from "./components/insertItemForm";
+// import InsertItemForm from "./components/insertItemForm";
+import UpdateItemForm from "./components/updateItemForm";
 
 const {Header, Content} = Layout;
 
@@ -17,6 +18,7 @@ function App() {
 
     const [data, setData] = useState();
     const [categories, setCategories] = useState();
+    const [edit, setEdit] = useState();
 
     useEffect(() => {
         readData();
@@ -24,15 +26,37 @@ function App() {
 
     }, []);
 
-    function formInsertHandler(formData){
-        console.log('from here',formData);
-        // console.log({...formData, Date: moment(formData.Date).format("YYYY-MM-DD")});
-        saveData(formData).then(()=>{
-            console.log('data saved successfully', formData);
+    // function formInsertHandler(formData){
+    //     saveData(formData).then(()=>{
+    //         console.log('data saved successfully', formData);
+    //         readData();
+    //     });
+    // }
+
+    function editHandler(formData) {
+        setEdit(formData);
+    }
+
+    function editSubmitHandler(formData) {
+        updateData(formData).then(() => {
             readData();
         });
-        // saveData(formData);
     }
+
+    async function updateData(data) {
+        console.log('updating data', data.id, data.name);
+        const original = await DataStore.query(Reminder, data.id);
+        await DataStore.save(
+            Reminder.copyOf(original, updated => {
+                updated.name = data.name;
+                updated.store = data.store;
+                updated.date = data.date;
+                updated.price = data.price;
+                updated.categoryID = data.categoryID;
+            })
+        );
+    }
+
 
     async function saveData(data) {
         console.log('saving data');
@@ -52,7 +76,7 @@ function App() {
         console.log('saving data category');
         await DataStore.save(
             new Category({
-                "category_name": "Food",
+                "category_name": "Goods",
                 "Reminders": []
             })
         );
@@ -65,13 +89,11 @@ function App() {
             }
         );
         setData(models);
-        console.log('radin data',models);
     }
 
     async function readDataCat() {
         const models2 = await DataStore.query(Category);
         setCategories(models2);
-        console.log('reading category', models2);
     }
 
   return (
@@ -84,11 +106,18 @@ function App() {
                 <button onClick={() => readDataCat()}>readCate</button>
             </Header>
             <Content>
-                <InsertItemForm
+                {/*<InsertItemForm*/}
+                {/*    categories={categories}*/}
+                {/*    submitHandler={formInsertHandler}*/}
+                {/*/>*/}
+                <UpdateItemForm
+                    data={edit}
                     categories={categories}
-                    submitHandler={formInsertHandler}
+                    submitHandler={editSubmitHandler}
                 />
-                <ItemList items={data}/>
+                <ItemList
+                    editHandler={editHandler}
+                    items={data}/>
             </Content>
             <AppButtonAdd/>
         </Layout>
