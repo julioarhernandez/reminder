@@ -12,8 +12,9 @@ import moment from "moment";
 import {CloseOutlined, CheckOutlined} from '@ant-design/icons';
 
 import {InsertForm} from "./insertItemForm_styles"
+import CloseFakeModal from "./closeFakeModal";
 
-const UpdateItemForm = ({data, categories, submitHandler, deleteHandler }) => {
+const UpdateItemForm = ({data, categories, submitHandler, deleteHandler, children }) => {
 
     const [formData, setFormData] = useState({Id: '',Name:'', Category: '', Store: '', Date: '', Price: '', Active: false});
     const [enableSubmit, setEnableSubmit] = useState(false);
@@ -54,6 +55,7 @@ const UpdateItemForm = ({data, categories, submitHandler, deleteHandler }) => {
 
     return (
         <InsertForm>
+            {children}
             <Form
                 form={form}
                 labelCol={{

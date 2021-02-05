@@ -1,6 +1,7 @@
 @import '~antd/dist/antd.css';
-.App {
-  /*text-align: center;*/
+@import '~animate.css/animate.css';
+.App .ant-layout-content {
+    position: relative;
 }
 
 .App-logo {
@@ -29,6 +30,16 @@
   color: #61dafb;
 }
 
+.hide{
+  opacity: 0;
+}
+.invisible{
+  visibility: hidden;
+}
+.block {
+  visibility: visible;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -36,4 +47,14 @@
   to {
     transform: rotate(360deg);
   }
+}
+.fake-modal{
+  position: absolute;
+  top: 15px;
+  width: calc(100% - 40px);
+  background: white;
+  z-index: 1;
+  box-shadow: 0 0 20px 0px rgba(0, 21, 42, 0.1);
+  margin: 20px;
+  border-radius: 3px;
 }

@@ -5,12 +5,13 @@ import {
     Button,
     Select,
     DatePicker,
-    InputNumber,
+    InputNumber
 } from 'antd';
 
 import {InsertForm} from "./insertItemForm_styles"
+import CloseFakeModal from "./closeFakeModal";
 
-const InsertItemForm = ({categories, submitHandler}) => {
+const InsertItemForm = ({categories, submitHandler, children}) => {
 
     const [formData, setFormData] = useState({Name:'', Category: '', Store: '', Date: '', Price: ''});
 
@@ -24,6 +25,7 @@ const InsertItemForm = ({categories, submitHandler}) => {
 
     return (
         <InsertForm>
+            {children}
             <Form
                 labelCol={{
                     span: 4,

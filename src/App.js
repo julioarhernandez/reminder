@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import {Layout, Button} from 'antd';
 import moment from "moment";
+import classNames from "classnames";
 
 import {AppButtonAdd} from "./App_styles";
 
@@ -9,8 +10,10 @@ import {DataStore, SortDirection} from '@aws-amplify/datastore';
 
 import {Reminder, Category} from './models';
 import ItemList from "./components/itemList";
-// import InsertItemForm from "./components/insertItemForm";
+import InsertItemForm from "./components/insertItemForm";
 import UpdateItemForm from "./components/updateItemForm";
+import CloseFakeModal from "./components/closeFakeModal";
+import {InsertForm} from "./components/insertItemForm_styles";
 
 const {Header, Content} = Layout;
 
@@ -19,6 +22,7 @@ function App() {
     const [data, setData] = useState();
     const [categories, setCategories] = useState();
     const [edit, setEdit] = useState();
+    const [uiView, setUiView] = useState('home');
 
     useEffect(() => {
         readData();
@@ -26,15 +30,20 @@ function App() {
 
     }, []);
 
-    // function formInsertHandler(formData){
-    //     saveData(formData).then(()=>{
-    //         console.log('data saved successfully', formData);
-    //         readData();
-    //     });
-    // }
+    function formInsertHandler(formData){
+        saveData(formData).then(()=>{
+            console.log('data saved successfully', formData);
+            readData();
+        });
+    }
+
+    function closeHandler (){
+        setUiView('home');
+    }
 
     function editHandler(formData) {
         setEdit(formData);
+        setUiView('Update');
     }
 
     function deleteHandler(id) {
@@ -117,21 +126,38 @@ function App() {
                 <button onClick={() => readDataCat()}>readCate</button>
             </Header>
             <Content>
-                {/*<InsertItemForm*/}
-                {/*    categories={categories}*/}
-                {/*    submitHandler={formInsertHandler}*/}
-                {/*/>*/}
-                <UpdateItemForm
-                    data={edit}
-                    categories={categories}
-                    submitHandler={editSubmitHandler}
-                    deleteHandler={deleteHandler}
-                />
+                <div className={classNames('fake-modal animate__animated animate__faster',{
+                    animate__slideInDown: uiView === 'Insert',
+                    animate__fadeOutDown: uiView !== 'Insert',
+                })}>
+                    <InsertItemForm
+                        categories={categories}
+                        submitHandler={formInsertHandler}>
+                        <CloseFakeModal
+                            closeHandler={closeHandler}/>
+                    </InsertItemForm>
+                </div>
+                <div className={classNames('fake-modal animate__animated animate__faster', {
+                    animate__slideInDown: uiView === 'Update',
+                    animate__fadeOutDown: uiView !== 'Update',
+                })}>
+                    <UpdateItemForm
+                        data={edit}
+                        categories={categories}
+                        submitHandler={editSubmitHandler}
+                        deleteHandler={deleteHandler}>
+                        <CloseFakeModal
+                            closeHandler={closeHandler}/>
+                    </UpdateItemForm>
+                </div>
                 <ItemList
                     editHandler={editHandler}
                     items={data}/>
             </Content>
-            <AppButtonAdd/>
+            <AppButtonAdd
+                className="ant-btn-primary"
+                onClick={() => setUiView('Insert')}
+            />
         </Layout>
     </div>
   );
