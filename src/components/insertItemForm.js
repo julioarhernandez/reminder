@@ -28,10 +28,10 @@ const InsertItemForm = ({categories, submitHandler, children}) => {
             {children}
             <Form
                 labelCol={{
-                    span: 4,
+                    span: 12,
                 }}
                 wrapperCol={{
-                    span: 14,
+                    span: 12,
                 }}
                 layout="horizontal"
                 size="large"
@@ -41,6 +41,7 @@ const InsertItemForm = ({categories, submitHandler, children}) => {
                     label="Item Name"
                     required
                     tooltip="This is a required field"
+                    name="Name"
                     rules={[
                         {
                             required: true,
@@ -49,24 +50,23 @@ const InsertItemForm = ({categories, submitHandler, children}) => {
                     ]}
                 >
                     <Input
-                        name="Name"
-                        onChange={(e) => handleChange(e.target.value, e.target.name)}
+                        onChange={(e) => handleChange(e.target.value, 'Name')}
                     />
                 </Form.Item>
 
                 <Form.Item
                     label="Store"
                     tooltip="This is a required field"
-                >
+                    name="Store">
                     <Input
-                        name="Store"
-                        onChange={(e) => handleChange(e.target.value, e.target.name)}
+                        onChange={(e) => handleChange(e.target.value, 'Store')}
                     />
                 </Form.Item>
 
-                <Form.Item label="Category">
+                <Form.Item
+                    label="Category"
+                    name="Category">
                     <Select
-                        name="Category"
                         onChange={(value) => handleChange(value, 'Category')}
                     >
                         {categories && categories.map( (item,index)=>{
@@ -90,21 +90,21 @@ const InsertItemForm = ({categories, submitHandler, children}) => {
                                 message: 'Please input start date of item!',
                             },
                         ]}
+                        name="Date"
                     >
                         <DatePicker
                             format={"MM/DD/YYYY"}
-                            name="Date"
                             onChange={(value, dateValue) => handleChange(dateValue, 'Date')}
                         />
                     </Form.Item>
                     <Form.Item
                         label="Price"
+                        name="Price"
                         style={{display: 'inline-block', width: 'calc(50% - 8px)'}}
                     >
                         <InputNumber
                             formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                            name="Price"
                             onChange={(value) => handleChange(value, 'Price')}
                         />
                     </Form.Item>

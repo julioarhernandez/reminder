@@ -88,7 +88,7 @@ function App() {
             new Reminder({
                 "name": data.Name,
                 "date": moment(data.Date).format("YYYY-MM-DD"),
-                "price": data.Price,
+                "price": data.Price || 0,
                 "store": data.Store,
                 "active":  true,
                 "categoryID": data.Category

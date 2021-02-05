@@ -27,7 +27,7 @@ const ItemList = ({items, editHandler}) => {
                                 avatar={
                                     <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>
                                 }
-                                title={<div>{item.name} <strong>(${item.price})</strong> <span>{item.store}</span></div>}
+                                title={<div>{item.name}{item.price !== 0 && <strong>(${item.price})</strong>} <span>{item.store}</span></div>}
                                 description={<div><CalendarTwoTone/> {moment().diff(item.date, "days")} Days - {moment(item.date).format("MM/DD/YYYY")}</div>}
                             />
                         </Skeleton>
