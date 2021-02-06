@@ -73,7 +73,7 @@
 }
 .fake-modal{
   position: absolute;
-  top: 15px;
+  top: 35px;
   width: calc(100% - 40px);
   background: white;
   z-index: 1;
