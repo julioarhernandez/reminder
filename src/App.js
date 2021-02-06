@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';
-import {Layout, Button, Tabs, message} from 'antd';
+import {Layout, Button, Tabs, message, Input} from 'antd';
 import moment from "moment";
 import classNames from "classnames";
 
@@ -33,10 +33,17 @@ function App() {
         readDataArchived();
     }, []);
 
+    const {Search} = Input;
+
     function tabChanged(key) {
         console.log(key);
         setActiveTab(key);
     }
+
+    const onSearch = value => {
+        readDataFiltered(value);
+        readDataArchivedFiltered(value);
+    };
 
     function formInsertHandler(formData){
         saveData(formData).then(()=>{
@@ -83,9 +90,27 @@ function App() {
         setData(models);
     }
 
+    async function readDataFiltered(searchQuery) {
+        const models = await DataStore.query(Reminder, c =>
+                c.active("eq", true).name("contains", searchQuery), {
+                sort: s => s.date(SortDirection.ASCENDING)
+            }
+        );
+        setData(models);
+    }
+
     async function readDataArchived() {
         const models = await DataStore.query(Reminder, c =>
                 c.active("eq", false), {
+                sort: s => s.date(SortDirection.ASCENDING)
+            }
+        );
+        setDataArchived(models);
+    }
+
+    async function readDataArchivedFiltered(searchQuery) {
+        const models = await DataStore.query(Reminder, c =>
+                c.active("eq", false).name("contains", searchQuery), {
                 sort: s => s.date(SortDirection.ASCENDING)
             }
         );
@@ -148,10 +173,8 @@ function App() {
         })}>
         <Layout >
             <Header>
-                <Button type="primary" size="large" onClick={() => saveData()}>Save</Button>
-                <button onClick={() => saveCategory()}>SaveCate</button>
-                <button onClick={() => readData()}>read</button>
-                <button onClick={() => readDataCat()}>readCate</button>
+                <Search placeholder="input search text" onSearch={onSearch} enterButton allowClear/>
+                {/*<Button onClick={() => saveCategory()}>SaveCate</Button>*/}
             </Header>
             <Content>
                 <div className={classNames('fake-modal animate__animated animate__faster',{

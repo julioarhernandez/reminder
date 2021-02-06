@@ -58,7 +58,7 @@ const ItemList = ({items, editHandler, categories}) => {
                                 avatar={
                                     <Avatar style={{backgroundColor: 'rgba(0, 22, 41, 0.5)'}}>{showCatLetter(item.categoryID)}</Avatar>
                                 }
-                                title={<div>{item.name}{item.price !== 0 && <strong>(${item.price})</strong>} <span>{item.store}</span></div>}
+                                title={<div>{item.name} {item.price !== 0 && <strong>(${item.price})</strong>} <span>{item.store}</span></div>}
                                 description={<div><CalendarTwoTone/> {compareDateResult(item.date, item.endingDate)} Days - {moment(item.date).format("MM/DD/YYYY")}</div>}
                             />
                         </Skeleton>

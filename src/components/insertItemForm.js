@@ -5,7 +5,7 @@ import {
     Button,
     Select,
     DatePicker,
-    InputNumber
+    InputNumber, Col, Row
 } from 'antd';
 
 import {InsertForm} from "./insertItemForm_styles"
@@ -84,38 +84,38 @@ const InsertItemForm = ({categories, submitHandler, children}) => {
                         })}
                     </Select>
                 </Form.Item>
-                <Form.Item>
-                    <Form.Item
-                        label="Date"
-                        style={{display: 'inline-block', width: 'calc(50% - 8px)'}}
-                        required
-                        tooltip="This is a required field"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input start date of item!',
-                            },
-                        ]}
-                        name="Date"
-                    >
-                        <DatePicker
-                            format={"MM/DD/YYYY"}
-                            onChange={(value, dateValue) => handleChange(dateValue, 'Date')}
-                        />
-                    </Form.Item>
-                    <Form.Item
-                        label="Price"
-                        name="Price"
-                        style={{display: 'inline-block', width: 'calc(50% - 8px)'}}
-                    >
-                        <InputNumber
-                            ref={inputPrice}
-                            formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                            parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                            onChange={(value) => handleChange(value, 'Price')}
-                        />
-                    </Form.Item>
-                </Form.Item>
+                <Row gutter={10} className="mb-submit">
+                    <Col span={12}>
+                        <Form.Item
+                            label="Date"
+                            required
+                            tooltip="This is a required field"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input start date of item!',
+                                },
+                            ]}
+                            name="Date">
+                            <DatePicker
+                                format={"MM/DD/YYYY"}
+                                onChange={(value, dateValue) => handleChange(dateValue, 'Date')}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            label="Price"
+                            name="Price">
+                            <InputNumber
+                                ref={inputPrice}
+                                formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                onChange={(value) => handleChange(value, 'Price')}
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
                 <Form.Item>
                     <Button
                         type="primary"
