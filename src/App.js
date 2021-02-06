@@ -21,6 +21,7 @@ function App() {
 
     const [data, setData] = useState();
     const [dataArchived, setDataArchived] = useState();
+    const [activeTab,setActiveTab] = useState('1');
     const [categories, setCategories] = useState();
     const [edit, setEdit] = useState();
     const [uiView, setUiView] = useState('home');
@@ -32,8 +33,9 @@ function App() {
         readDataArchived();
     }, []);
 
-    function callback(key) {
+    function tabChanged(key) {
         console.log(key);
+        setActiveTab(key);
     }
 
     function formInsertHandler(formData){
@@ -141,8 +143,10 @@ function App() {
     }
 
   return (
-    <div className="App">
-        <Layout>
+    <div className={classNames('App', {
+            activeBackground: activeTab === '1'
+        })}>
+        <Layout >
             <Header>
                 <Button type="primary" size="large" onClick={() => saveData()}>Save</Button>
                 <button onClick={() => saveCategory()}>SaveCate</button>
@@ -177,7 +181,7 @@ function App() {
                     </UpdateItemForm>
 
                 </div>
-                <Tabs defaultActiveKey="1" onChange={callback}>
+                <Tabs defaultActiveKey="1" onChange={tabChanged}>
                     <TabPane tab="Active" key="1">
                         <ItemList
                             editHandler={editHandler}

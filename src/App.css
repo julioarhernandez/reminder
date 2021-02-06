@@ -1,5 +1,8 @@
 @import '~antd/dist/antd.css';
 @import '~animate.css/animate.css';
+.App .ant-layout{
+  transition: background-color 0.3s ease-in-out;
+}
 .App .ant-layout-content {
     position: relative;
 }
@@ -36,6 +39,10 @@
 .mb-submit{
   margin-bottom: 20px;
 }
+
+.activeBackground .ant-layout{
+  background-color: rgba(0,0,0,0);
+}
 .hidden{
   display: none;
 }
@@ -67,4 +74,5 @@
   z-index: 1;
   box-shadow: 0 0 20px 0px rgba(0, 21, 42, 0.1);
   border-radius: 3px;
+  animation-fill-mode: none;
 }
