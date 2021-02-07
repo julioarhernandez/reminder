@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 export const AppButtonAdd = styled.div`
     position: absolute;
-    top: 78px;
+    top: 105px;
     right: 15px;
-    width: 45px;
-    height: 45px;
+    width: 55px;
+    height: 55px;
     display: flex;
     align-items: center;
     justify-content: center;

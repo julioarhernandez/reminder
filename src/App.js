@@ -14,6 +14,8 @@ import InsertItemForm from "./components/insertItemForm";
 import UpdateItemForm from "./components/updateItemForm";
 import CloseFakeModal from "./components/closeFakeModal";
 import {InsertForm} from "./components/insertItemForm_styles";
+import CategoryList from "./components/CategoryList";
+import InsertCategoryForm from "./components/insertCategoryForm";
 
 const {Header, Content} = Layout;
 
@@ -173,7 +175,7 @@ function App() {
         })}>
         <Layout >
             <Header>
-                <Search placeholder="input search text" onSearch={onSearch} enterButton allowClear/>
+                <Search placeholder="input search text" size="large" onSearch={onSearch} enterButton allowClear/>
                 {/*<Button onClick={() => saveCategory()}>SaveCate</Button>*/}
             </Header>
             <Content>
@@ -184,6 +186,7 @@ function App() {
                 })}>
                     <InsertItemForm
                         categories={categories}
+                        changeView={setUiView}
                         submitHandler={formInsertHandler}>
                         <CloseFakeModal
                             closeHandler={closeHandler}/>
@@ -204,6 +207,18 @@ function App() {
                     </UpdateItemForm>
 
                 </div>
+                <div className={classNames('fake-modal animate__animated animate__faster', {
+                    animate__slideInDown: uiView === 'InsertCategory',
+                    animate__fadeOutDown: uiView !== 'InsertCategory',
+                    hide: uiView !== 'InsertCategory',
+                })}>
+                    <InsertCategoryForm
+                        categories={categories}
+                        submitHandler={formInsertHandler}>
+                        <CloseFakeModal
+                            closeHandler={closeHandler}/>
+                    </InsertCategoryForm>
+                </div>
                 <Tabs defaultActiveKey="1" onChange={tabChanged}>
                     <TabPane tab="Active" key="1">
                         <ItemList
@@ -215,6 +230,11 @@ function App() {
                         <ItemList
                             editHandler={editHandler}
                             items={dataArchived}
+                            categories={categories}/>
+                    </TabPane>
+                    <TabPane tab="Categories" key="3">
+                        <CategoryList
+                            editHandler={editHandler}
                             categories={categories}/>
                     </TabPane>
                 </Tabs>

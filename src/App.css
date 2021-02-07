@@ -6,9 +6,14 @@
 .App .ant-layout-content {
     position: relative;
 }
+.App .ant-tabs-top > .ant-tabs-nav:before{
+  height: 1px;
+  background: linear-gradient( 90deg, rgba(0, 0, 0, 0.08), transparent);
+  border: none;
+}
 
 .App .ant-layout-header{
-  height: 90px;
+  height: 100px;
   padding: 30px 20px 30px;
 }
 
@@ -62,6 +67,10 @@
 .block {
   visibility: visible;
 }
+.btn-no-padding{
+  padding-left: 0;
+  padding-right: 0;
+}
 
 @keyframes App-logo-spin {
   from {
@@ -73,7 +82,7 @@
 }
 .fake-modal{
   position: absolute;
-  top: 35px;
+  top: 70px;
   width: calc(100% - 40px);
   background: white;
   z-index: 1;

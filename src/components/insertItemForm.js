@@ -10,7 +10,7 @@ import {
 
 import {InsertForm} from "./insertItemForm_styles"
 
-const InsertItemForm = ({categories, submitHandler, children}) => {
+const InsertItemForm = ({categories, submitHandler, children, changeView}) => {
 
     const [formData, setFormData] = useState({Name:'', Category: '', Store: '', Date: '', Price: ''});
     const inputName = useRef();
@@ -18,6 +18,10 @@ const InsertItemForm = ({categories, submitHandler, children}) => {
 
     const handleChange = (value, element) => {
         setFormData({...formData, [element]: value});
+    };
+
+    const addCategoryLink = () => {
+        changeView('InsertCategory');
     };
 
     const submitFormHandler = () => {
@@ -83,6 +87,9 @@ const InsertItemForm = ({categories, submitHandler, children}) => {
                            )
                         })}
                     </Select>
+                    <Button type="link" size="small" className="btn-no-padding" onClick={() => addCategoryLink()}>
+                        Add category
+                    </Button>
                 </Form.Item>
                 <Row gutter={10} className="mb-submit">
                     <Col span={12}>
