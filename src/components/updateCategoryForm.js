@@ -4,9 +4,8 @@ import {
     Form,
     Input,
     Button,
+    Popconfirm,
 } from 'antd';
-import moment from "moment";
-import {CloseOutlined, CheckOutlined} from '@ant-design/icons';
 
 import {InsertForm} from "./insertItemForm_styles"
 
@@ -20,7 +19,7 @@ const UpdateCategoryForm = ({data, categories, submitHandler, deleteHandler, chi
         console.log(formData)
     };
 
-    const deleteFormHandler = () => {
+    function confirm() {
         deleteHandler(formData.id);
     }
 
@@ -82,10 +81,14 @@ const UpdateCategoryForm = ({data, categories, submitHandler, deleteHandler, chi
                         type="primary"
                         htmlType="submit"
                     >Update Item</Button>
-                    <Button
-                        danger
-                        onClick={deleteFormHandler}
-                        style={{marginLeft: '10px'}}>Delete Item</Button>
+                    <Popconfirm
+                        title="Are you sure to delete this task?"
+                        onConfirm={confirm}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <a href="#" style={{marginLeft: '10px'}} className="ant-btn ant-btn-lg ant-btn-dangerous">Delete Category</a>
+                    </Popconfirm>
                 </Form.Item>
             </Form>
         </InsertForm>
