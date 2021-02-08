@@ -172,11 +172,11 @@ const UpdateItemForm = ({data, categories, submitHandler, deleteHandler, childre
                         <Form.Item
                             label="Ending Date"
                             // style={{display: 'inline-block', width: 'calc(50% - 8px)'}}
-                            required
+                            required={formData && !(formData.active)}
                             tooltip="This is a required field"
                             rules={[
                                 {
-                                    required: true,
+                                    required: formData && !(formData.active),
                                     message: 'Please input end of date of item!',
                                 },
                             ]}
