@@ -16,6 +16,7 @@ import CloseFakeModal from "./components/closeFakeModal";
 import {InsertForm} from "./components/insertItemForm_styles";
 import CategoryList from "./components/CategoryList";
 import InsertCategoryForm from "./components/insertCategoryForm";
+import UpdateCategoryForm from "./components/updateCategoryForm";
 
 const {Header, Content} = Layout;
 
@@ -26,6 +27,7 @@ function App() {
     const [activeTab,setActiveTab] = useState('1');
     const [categories, setCategories] = useState();
     const [edit, setEdit] = useState();
+    const [editCategory, setEditCategory] = useState();
     const [uiView, setUiView] = useState('home');
     const {TabPane} = Tabs;
 
@@ -56,6 +58,15 @@ function App() {
         });
     }
 
+    function formInsertCategoryHandler(formData) {
+        saveDataCategory(formData).then(() => {
+            console.log('category saved successfully', formData);
+            readDataCat();
+            message.success('New Category Created');
+            // Reset insert input fields
+        });
+    }
+
     function closeHandler (){
         setUiView('home');
     }
@@ -63,6 +74,11 @@ function App() {
     function editHandler(formData) {
         setEdit(formData);
         setUiView('Update');
+    }
+
+    function editCategoryHandler(formData) {
+        setEditCategory(formData);
+        setUiView('UpdateCategory');
     }
 
     function deleteHandler(id) {
@@ -74,11 +90,27 @@ function App() {
         });
     }
 
+    function deleteCategoryHandler(id) {
+        eraseCategoryData(id).then(() => {
+            readDataCat();
+            setUiView('home');
+            message.success('Category Deleted');
+        });
+    }
+
     function editSubmitHandler(formData) {
         updateData(formData).then(() => {
             readData();
             readDataArchived();
             message.success('Item Updated');
+            setUiView('home');
+        });
+    }
+
+    function editCategorySubmitHandler(formData) {
+        updateCategoryData(formData).then(() => {
+            readDataCat();
+            message.success('Category Updated');
             setUiView('home');
         });
     }
@@ -135,6 +167,16 @@ function App() {
         );
     }
 
+    async function updateCategoryData(data) {
+        console.log('update data', moment(data.date).format("YYYY-MM-DD"));
+        const original = await DataStore.query(Category, data.id);
+        await DataStore.save(
+            Category.copyOf(original, updated => {
+                updated.category_name = data.category_name;
+            })
+        );
+    }
+
     async function saveData(data) {
         console.log('saving data');
         await DataStore.save(
@@ -154,11 +196,15 @@ function App() {
         DataStore.delete(modelToDelete);
     }
 
-    async function saveCategory() {
-        console.log('saving data category');
+    async function eraseCategoryData(data) {
+        const modelToDelete = await DataStore.query(Category, data);
+        DataStore.delete(modelToDelete);
+    }
+
+    async function saveDataCategory(data) {
         await DataStore.save(
             new Category({
-                "category_name": "Goods",
+                "category_name": data.category,
                 "Reminders": []
             })
         );
@@ -208,13 +254,27 @@ function App() {
 
                 </div>
                 <div className={classNames('fake-modal animate__animated animate__faster', {
+                    animate__slideInDown: uiView === 'UpdateCategory',
+                    animate__fadeOutDown: uiView !== 'UpdateCategory',
+                    hide: uiView !== 'UpdateCategory',
+                })}>
+                    <UpdateCategoryForm
+                        data={editCategory}
+                        submitHandler={editCategorySubmitHandler}
+                        deleteHandler={deleteCategoryHandler}>
+                        <CloseFakeModal
+                            closeHandler={closeHandler}/>
+                    </UpdateCategoryForm>
+
+                </div>
+                <div className={classNames('fake-modal animate__animated animate__faster', {
                     animate__slideInDown: uiView === 'InsertCategory',
                     animate__fadeOutDown: uiView !== 'InsertCategory',
                     hide: uiView !== 'InsertCategory',
                 })}>
                     <InsertCategoryForm
                         categories={categories}
-                        submitHandler={formInsertHandler}>
+                        submitHandler={formInsertCategoryHandler}>
                         <CloseFakeModal
                             closeHandler={closeHandler}/>
                     </InsertCategoryForm>
@@ -234,7 +294,7 @@ function App() {
                     </TabPane>
                     <TabPane tab="Categories" key="3">
                         <CategoryList
-                            editHandler={editHandler}
+                            editHandler={editCategoryHandler}
                             categories={categories}/>
                     </TabPane>
                 </Tabs>

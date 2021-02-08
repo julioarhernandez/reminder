@@ -1,20 +1,15 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
     Form,
     Input,
     Button,
-    Select,
-    DatePicker,
-    InputNumber, Col, Row
 } from 'antd';
 
 import {InsertCategoryFormStyle} from "./insertCategoryForm_styles"
 
-const InsertCategoryForm = ({categories, submitHandler, children}) => {
+const InsertCategoryForm = ({ submitHandler, children}) => {
 
-    const [formData, setFormData] = useState({Name:'', Category: '', Store: '', Date: '', Price: ''});
-    const inputName = useRef();
-    const inputPrice = useRef();
+    const [formData, setFormData] = useState();
 
     const handleChange = (value, element) => {
         setFormData({...formData, [element]: value});
@@ -46,7 +41,7 @@ const InsertCategoryForm = ({categories, submitHandler, children}) => {
                     label="Category Name"
                     required
                     tooltip="This is a required field"
-                    name="Name"
+                    name="category"
                     rules={[
                         {
                             required: true,
@@ -55,12 +50,9 @@ const InsertCategoryForm = ({categories, submitHandler, children}) => {
                     ]}
                 >
                     <Input
-                        ref={inputName}
-                        onChange={(e) => handleChange(e.target.value, 'Name')}
+                        onChange={(e) => handleChange(e.target.value, 'category')}
                     />
                 </Form.Item>
-
-
                 <Form.Item>
                     <Button
                         type="primary"

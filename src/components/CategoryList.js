@@ -8,28 +8,17 @@ import {
 } from '@ant-design/icons';
 
 
-const CategoryList = ({items, editHandler, categories}) => {
-
-    const findCategory = (catId) => {
-        const catIdFound = categories.find(v => v.id === catId);
-        if (catIdFound){
-            return catIdFound.category_name;
-        }
-    };
-
-    const compareDateResult = (itemDate, itemEndingDate) => {
-        console.log('itemending', itemEndingDate);
-        if (itemEndingDate) {
-            return moment(itemEndingDate).diff(itemDate, "days");
-
-        } else {
-            return moment().diff(itemDate, "days");
-        }
-
-    };
+const CategoryList = ({editHandler, categories}) => {
 
     const getFirstLetterOf = (string) => {
         return string[0];
+    };
+
+    const findCategory = (catId) => {
+        const catIdFound = categories.find(v => v.id === catId);
+        if (catIdFound) {
+            return catIdFound.category_name;
+        }
     };
 
     const showCatLetter = (itemCategoryId) => {
@@ -48,7 +37,7 @@ const CategoryList = ({items, editHandler, categories}) => {
             <List
                 className="demo-loadmore-list"
                 itemLayout="horizontal"
-                dataSource={items}
+                dataSource={categories}
                 renderItem={item => (
                     <List.Item
                         actions={[<a key="list-loadmore-edit" onClick={(e) => itemClickHandler(item)}>Edit</a>]}
@@ -56,11 +45,9 @@ const CategoryList = ({items, editHandler, categories}) => {
                         <Skeleton avatar title={false} loading={item.loading} active>
                             <List.Item.Meta
                                 avatar={
-                                    <Avatar style={{backgroundColor: 'rgba(0, 22, 41, 0.5)'}}>{showCatLetter(item.categoryID)}</Avatar>
+                                    <Avatar style={{backgroundColor: 'rgba(0, 22, 41, 0.5)'}}>{showCatLetter(item.id)}</Avatar>
                                 }
-                                title={<div>{item.name} {item.price !== 0 && <strong>(${item.price})</strong>} <span>{item.store}</span></div>}
-                                description={<div><CalendarTwoTone/> {compareDateResult(item.date, item.endingDate)} Days - {moment(item.date).format("MM/DD/YYYY")}</div>}
-                            />
+                                title={<div>{item.category_name}</div>} />
                         </Skeleton>
                     </List.Item>
                 )}
