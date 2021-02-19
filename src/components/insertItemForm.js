@@ -13,8 +13,7 @@ import {InsertForm} from "./insertItemForm_styles"
 const InsertItemForm = ({categories, submitHandler, children, changeView}) => {
 
     const [formData, setFormData] = useState({Name:'', Category: '', Store: '', Date: '', Price: ''});
-    const inputName = useRef();
-    const inputPrice = useRef();
+    const formSubmit = useRef();
 
     const handleChange = (value, element) => {
         setFormData({...formData, [element]: value});
@@ -26,9 +25,9 @@ const InsertItemForm = ({categories, submitHandler, children, changeView}) => {
 
     const submitFormHandler = () => {
         submitHandler(formData);
-
         // TODO: after submitting clear the
         //  input name and date
+        formSubmit.current.resetFields();
     };
 
 
@@ -45,12 +44,14 @@ const InsertItemForm = ({categories, submitHandler, children, changeView}) => {
                 layout="horizontal"
                 size="large"
                 onFinish={submitFormHandler}
+                ref={formSubmit}
             >
                 <Form.Item
                     label="Item Name"
                     required
                     tooltip="This is a required field"
                     name="Name"
+                    value={formData.Name}
                     rules={[
                         {
                             required: true,
@@ -59,7 +60,6 @@ const InsertItemForm = ({categories, submitHandler, children, changeView}) => {
                     ]}
                 >
                     <Input
-                        ref={inputName}
                         onChange={(e) => handleChange(e.target.value, 'Name')}
                     />
                 </Form.Item>
@@ -115,7 +115,6 @@ const InsertItemForm = ({categories, submitHandler, children, changeView}) => {
                             label="Price"
                             name="Price">
                             <InputNumber
-                                ref={inputPrice}
                                 formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                 parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                 onChange={(value) => handleChange(value, 'Price')}
