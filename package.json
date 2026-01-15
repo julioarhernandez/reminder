@@ -9,7 +9,7 @@
         "@testing-library/user-event": "^12.6.3",
         "animate.css": "^4.1.1",
         "antd": "^4.12.1",
-        "aws-amplify": "^3.3.16",
+        "aws-amplify": "^6.15.9",
         "classnames": "^2.2.6",
         "moment": "^2.29.1",
         "react": "^17.0.1",
